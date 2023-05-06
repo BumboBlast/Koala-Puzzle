@@ -15,7 +15,7 @@ class Layout:
         self.main_frame.place(x=0, y=0, width=root.winfo_width(), height=root.winfo_height())
 
         # Game frame. Container that holds all UI elements
-        self.game_frame = LabelFrame(self.main_frame, text='Picross', bg='light pink', fg='black')
+        self.game_frame = Frame(self.main_frame, bg='light pink')
         self.game_frame.pack()
 
         """ At the moment, the sizes are relative to this empty corner.
