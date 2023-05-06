@@ -3,9 +3,10 @@ from Game import *
 
 root = Tk()
 root.title('Koala Puzzle')
+root.geometry('1280x720')
 root.bind('<Escape>', lambda kill: root.destroy())
 
-game = Game()
+game = Game(root)
 
 # opens the window
 root.mainloop()
