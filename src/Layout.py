@@ -11,12 +11,12 @@ class Layout:
         game_width = game_height
 
         # Main Frame. Container that holds the entire screen.
-        self.main_frame = Frame(root, bg='light blue', pady=(root.winfo_height() - game_height) / 2)
-        self.main_frame.place(x=0, y=0, width=root.winfo_width(), height=root.winfo_height())
+        self.main_frame = Frame(root, bg='light blue')
+        self.main_frame.pack(ipady=(root.winfo_height() - game_height) / 2, ipadx=(root.winfo_width() - game_width) / 2)
 
         # Game frame. Container that holds all UI elements
         self.game_frame = Frame(self.main_frame, bg='light pink')
-        self.game_frame.pack()
+        self.game_frame.pack(side=TOP, fill='none', expand=True)
 
         """ At the moment, the sizes are relative to this empty corner.
         Later, want them to be relative to the clue_frames, so i can input a variable number of clues. """
@@ -58,13 +58,13 @@ class Layout:
         self.bottom_buffer.grid(row=3, column=1, columnspan=3)
 
         # top buffer frame for padding
-        self.bottom_buffer = Frame(self.game_frame, bg='light pink', width=game_width, height=padding_height)
-        self.bottom_buffer.grid(row=0, column=1, columnspan=3)
+        self.top_buffer = Frame(self.game_frame, bg='light pink', width=game_width, height=padding_height)
+        self.top_buffer.grid(row=0, column=1, columnspan=3)
 
         # left buffer frame for padding
-        self.bottom_buffer = Frame(self.game_frame, bg='light pink', width=padding_width, height=game_height)
-        self.bottom_buffer.grid(row=0, column=0, rowspan=4)
+        self.left_buffer = Frame(self.game_frame, bg='light pink', width=padding_width, height=game_height)
+        self.left_buffer.grid(row=0, column=0, rowspan=4)
 
         # right buffer frame for padding
-        self.bottom_buffer = Frame(self.game_frame, bg='light pink', width=padding_width, height=game_height)
-        self.bottom_buffer.grid(row=0, column=3, rowspan=4)
+        self.right_buffer = Frame(self.game_frame, bg='light pink', width=padding_width, height=game_height)
+        self.right_buffer.grid(row=0, column=3, rowspan=4)
