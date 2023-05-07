@@ -18,8 +18,10 @@ class Layout:
         self.main_frame.grid_propagate(False)
 
         # Game frame. Container that holds all UI elements
-        self.game_frame = Frame(self.main_frame, bg='light pink', width=game_width, height=game_height)
+        self.game_frame = Frame(self.main_frame, bg='light pink', width=game_width, height=game_height, padx=10)
         self.game_frame.pack(fill='none', expand=True)
+
+        # this is so the grid cells are centered on the game frame.
         self.game_frame.grid_propagate(False)
         self.game_frame.grid_rowconfigure(0, weight=1)
         self.game_frame.grid_rowconfigure(1, weight=1)
@@ -28,10 +30,10 @@ class Layout:
 
         """ At the moment, the sizes are relative to the clue_frames, so i can input a variable number of clues. """
 
-        column_clues_width = 400  # how many columns there are
+        column_clues_width = 600  # how many columns there are
         column_clues_height = 100  # how long is the largest column (number of clues per column)
         row_clues_width = 100  # how long is the largest row (number of clues per row)
-        row_clues_height = 400  # how many rows there are
+        row_clues_height = 200  # how many rows there are
 
         # # vertical clues frame. Container holds the vertical clues. Rectangle above the nonogram.
         self.column_clues = Frame(self.game_frame, bg='yellow', width=column_clues_width, height=column_clues_height)
