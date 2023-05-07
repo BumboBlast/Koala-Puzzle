@@ -1,70 +1,50 @@
 from tkinter import *
+from Notation import *
 
 """This is a list of functions that configure the layout of the screen. Provides no functionality."""
 
 
 class Layout:
-    def __init__(self, root):
+    def __init__(self, root, notation):
         root.update_idletasks()
+        root.grid_propagate(False)
 
         game_height = root.winfo_height() * 0.92
         game_width = game_height
 
         # Main Frame. Container that holds the entire screen.
         self.main_frame = Frame(root, bg='light blue')
-        self.main_frame.pack(ipady=(root.winfo_height() - game_height) / 2, ipadx=(root.winfo_width() - game_width) / 2)
+        self.main_frame.pack(fill='both', expand=True)
+        self.main_frame.grid_propagate(False)
 
         # Game frame. Container that holds all UI elements
-        self.game_frame = Frame(self.main_frame, bg='light pink')
-        self.game_frame.pack(side=TOP, fill='none', expand=True)
+        self.game_frame = Frame(self.main_frame, bg='light pink', width=game_width, height=game_height)
+        self.game_frame.pack(fill='none', expand=True)
+        self.game_frame.grid_propagate(False)
+        self.game_frame.grid_rowconfigure(0, weight=1)
+        self.game_frame.grid_rowconfigure(1, weight=1)
+        self.game_frame.grid_columnconfigure(0, weight=1)
+        self.game_frame.grid_columnconfigure(1, weight=1)
 
-        """ At the moment, the sizes are relative to this empty corner.
-        Later, want them to be relative to the clue_frames, so i can input a variable number of clues. """
-        corner_width = game_width * 0.25
-        corner_height = corner_width
+        """ At the moment, the sizes are relative to the clue_frames, so i can input a variable number of clues. """
 
-        padding_width = corner_width * 0.1
-        padding_height = corner_height * 0.1
-
-        horizontal_clues_width = corner_width
-        horizontal_clues_height = game_height - corner_height - (2 * padding_height)
-
-        vertical_clues_width = game_width - corner_width
-        vertical_clues_height = corner_height
-
-        picross_width = vertical_clues_width
-        picross_height = horizontal_clues_height
-
-        # corner frame. Represents the empty space between the clues, complement of the picross board.
-        self.corner_frame = Frame(self.game_frame, bg='light grey', width=corner_width, height=corner_height)
-        self.corner_frame.grid(row=1, column=1)
-
-        # picross frame. Container holds the nonogram board.
-        self.picross_frame = Frame(self.game_frame, bg='red', width=picross_width, height=picross_height)
-        self.picross_frame.grid(row=2, column=2)
-
-        # horizontal clues frame. Container holds the horizontal clues. Rectangle to the left of the nonogram.
-        self.horizontal_clues = Frame(self.game_frame, bg='purple', width=horizontal_clues_width,
-                                      height=horizontal_clues_height)
-        self.horizontal_clues.grid(row=2, column=1)
+        column_clues_width = 400  # how many columns there are
+        column_clues_height = 100  # how long is the largest column (number of clues per column)
+        row_clues_width = 100  # how long is the largest row (number of clues per row)
+        row_clues_height = 400  # how many rows there are
 
         # # vertical clues frame. Container holds the vertical clues. Rectangle above the nonogram.
-        self.vertical_clues = Frame(self.game_frame, bg='light green', width=vertical_clues_width,
-                                    height=vertical_clues_height)
-        self.vertical_clues.grid(row=1, column=2)
+        self.column_clues = Frame(self.game_frame, bg='yellow', width=column_clues_width, height=column_clues_height)
+        self.column_clues.grid(row=0, column=1, sticky='SW')
 
-        # bottom buffer frame for padding
-        self.bottom_buffer = Frame(self.game_frame, bg='light pink', width=game_width, height=padding_height)
-        self.bottom_buffer.grid(row=3, column=1, columnspan=3)
+        # horizontal clues frame. Container holds the horizontal clues. Rectangle to the left of the nonogram.
+        self.row_clues = Frame(self.game_frame, bg='light green', width=row_clues_width, height=row_clues_height)
+        self.row_clues.grid(row=1, column=0, sticky='NE')
 
-        # top buffer frame for padding
-        self.top_buffer = Frame(self.game_frame, bg='light pink', width=game_width, height=padding_height)
-        self.top_buffer.grid(row=0, column=1, columnspan=3)
+        # corner frame. Represents the empty space between the clues, complement of the picross board.
+        self.corner_frame = Frame(self.game_frame, bg='cyan', width=row_clues_width, height=column_clues_height)
+        self.corner_frame.grid(row=0, column=0, sticky='SE')
 
-        # left buffer frame for padding
-        self.left_buffer = Frame(self.game_frame, bg='light pink', width=padding_width, height=game_height)
-        self.left_buffer.grid(row=0, column=0, rowspan=4)
-
-        # right buffer frame for padding
-        self.right_buffer = Frame(self.game_frame, bg='light pink', width=padding_width, height=game_height)
-        self.right_buffer.grid(row=0, column=3, rowspan=4)
+        # picross frame. Container holds the nonogram board.
+        self.picross_frame = Frame(self.game_frame, bg='lavender', width=column_clues_width, height=row_clues_height)
+        self.picross_frame.grid(row=1, column=1, sticky='NW')
