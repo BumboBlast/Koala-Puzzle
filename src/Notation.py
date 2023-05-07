@@ -43,3 +43,25 @@ class Notation:
             row_list.append(new_row)
 
         return row_list
+
+    @staticmethod
+    def how_many_columns(notation):
+        """ returns the amount of cells that will make up the length of the column-clues frame """
+        return len(Notation.all_columns(notation))
+
+    @staticmethod
+    def how_many_rows(notation):
+        """ returns the amount of cells that will make up the height of the rows-clues frame """
+        return len(Notation.all_rows(notation))
+
+    @staticmethod
+    def length_longest_column(notation):
+        """ Returns the amount of cells that will make up the height of the column-clues frame.
+        The length of the longest column."""
+        return len(max(Notation.all_columns(notation), key=len))
+
+    @staticmethod
+    def length_longest_row(notation):
+        """ Returns the amount of cells that will make up the width of the row-clues frame.
+        The length of the longest row."""
+        return len(max(Notation.all_rows(notation), key=len))
