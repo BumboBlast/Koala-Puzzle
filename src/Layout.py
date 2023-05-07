@@ -55,4 +55,4 @@ class Layout:
                                    highlightbackground='black', highlightthickness='2')
         self.picross_frame.grid(row=1, column=1, sticky='NW')
 
-        all_rows(notation)
+        Notation.all_rows(notation)
