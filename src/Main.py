@@ -8,7 +8,7 @@ root.resizable(width=False, height=False)
 root.bind('<Escape>', lambda kill: root.destroy())
 
 
-notation = '2, 1,. 2, 1, 3,. 7,. 1, 3,. 2, 1... 2,. 2, 1,. 1, 1,. 3,. 1, 1,. 1, 1,. 2,. 1, 1,. 1, 2,. 2, ...'
+notation = '2, 1,, 2, 1, 3,, 7,, 1, 3,, 2, 1: 2,, 2, 1,, 1, 1,, 3,, 1, 1,, 1, 1,, 2,, 1, 1,, 1, 2,, 2'
 game = Game(root, notation)
 
 

@@ -36,17 +36,23 @@ class Layout:
         row_clues_height = 200  # how many rows there are
 
         # # vertical clues frame. Container holds the vertical clues. Rectangle above the nonogram.
-        self.column_clues = Frame(self.game_frame, bg='yellow', width=column_clues_width, height=column_clues_height)
+        self.column_clues = Frame(self.game_frame, bg='yellow', width=column_clues_width, height=column_clues_height,
+                                  highlightbackground='black', highlightthickness='2')
         self.column_clues.grid(row=0, column=1, sticky='SW')
 
         # horizontal clues frame. Container holds the horizontal clues. Rectangle to the left of the nonogram.
-        self.row_clues = Frame(self.game_frame, bg='light green', width=row_clues_width, height=row_clues_height)
+        self.row_clues = Frame(self.game_frame, bg='light green', width=row_clues_width, height=row_clues_height,
+                               highlightbackground='black', highlightthickness='2')
         self.row_clues.grid(row=1, column=0, sticky='NE')
 
         # corner frame. Represents the empty space between the clues, complement of the picross board.
-        self.corner_frame = Frame(self.game_frame, bg='cyan', width=row_clues_width, height=column_clues_height)
+        self.corner_frame = Frame(self.game_frame, bg='cyan', width=row_clues_width, height=column_clues_height,
+                                  highlightbackground='black', highlightthickness='2')
         self.corner_frame.grid(row=0, column=0, sticky='SE')
 
         # picross frame. Container holds the nonogram board.
-        self.picross_frame = Frame(self.game_frame, bg='lavender', width=column_clues_width, height=row_clues_height)
+        self.picross_frame = Frame(self.game_frame, bg='lavender', width=column_clues_width, height=row_clues_height,
+                                   highlightbackground='black', highlightthickness='2')
         self.picross_frame.grid(row=1, column=1, sticky='NW')
+
+        all_rows(notation)
