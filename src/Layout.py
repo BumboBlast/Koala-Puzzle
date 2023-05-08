@@ -75,13 +75,17 @@ class Layout:
                 new_button.button.grid(row=invert_row - clue, column=this_column)
 
         """ Tile the row frame!"""
-
+        
         # (this value - index of current clue) to put the grid's cell relative to the bottom.
         # Otherwise, the grid would be upside down.
         invert_col = Notation.length_longest_row(notation)
 
         # row data from notation [[1,1], [1,1]...]
         row_data = Notation.all_rows(notation)
+
+        # reverse each row because grid is putting them in backwards
+        for row in row_data:
+            row.reverse()
 
         for this_row in range(0, len(row_data)):
             for clue in range(0, len(row_data[this_row])):
