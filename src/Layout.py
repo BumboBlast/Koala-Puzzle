@@ -6,6 +6,7 @@ from Tile import *
 
 
 class Layout:
+
     def __init__(self, root, notation):
         root.update_idletasks()
         root.grid_propagate(False)
@@ -54,28 +55,18 @@ class Layout:
         self.picross_frame.grid(row=1, column=1, sticky='NW')
         self.picross_frame.grid_propagate()
 
-        """ Tile the row clue frame."""
+        # place the clues into the grids of each respective frame.
+        Layout.tile_row_clue_frame(notation, self.row_clues)
+        Layout.tile_column_clue_frame(notation, self.column_clues)
 
-        # (this value - index of current clue) to put the grid's cell relative to the bottom.
-        # Otherwise, the grid would be upside down.
-        invert_row = Notation.length_longest_column(notation)
+        # re-evaluate the frame dimensions.
+        self.column_clues.update_idletasks()
+        self.row_clues.update_idletasks()
+        self.picross_frame.config(width=self.column_clues.winfo_width(), height=self.row_clues.winfo_height())
+        self.corner_frame.config(width=self.row_clues.winfo_width(), height=self.column_clues.winfo_height())
 
-        # column data from notation [[1,1], [1,1]...]
-        column_data = Notation.all_columns(notation)
-
-        # reverse each column because grid is putting them in upside down
-        for col in column_data:
-            col.reverse()
-
-        for this_column in range(0, len(column_data)):
-            for clue in range(0, len(column_data[this_column])):
-                # make a button for this clue and put it in a column
-                new_button = ClueTile(self.column_clues)
-                new_button.button.config(text=column_data[this_column][clue])
-                new_button.button.grid(row=invert_row - clue, column=this_column)
-
-        """ Tile the row frame!"""
-
+    @classmethod
+    def tile_row_clue_frame(cls, notation, row_clues):
         # (this value - index of current clue) to put the grid's cell relative to the bottom.
         # Otherwise, the grid would be upside down.
         invert_col = Notation.length_longest_row(notation)
@@ -90,20 +81,26 @@ class Layout:
         for this_row in range(0, len(row_data)):
             for clue in range(0, len(row_data[this_row])):
                 # make a button for this clue and put it in a column
-                new_button = ClueTile(self.row_clues)
+                new_button = ClueTile(row_clues)
                 new_button.button.config(text=row_data[this_row][clue])
                 new_button.button.grid(row=this_row, column=invert_col - clue)
 
-        # re-evaluate the frame dimensions.
-        self.column_clues.update_idletasks()
-        self.row_clues.update_idletasks()
-        self.picross_frame.config(width=self.column_clues.winfo_width(), height=self.row_clues.winfo_height())
-        self.corner_frame.config(width=self.row_clues.winfo_width(), height=self.column_clues.winfo_height())
+    @classmethod
+    def tile_column_clue_frame(cls, notation, column_clues):
+        # (this value - index of current clue) to put the grid's cell relative to the bottom.
+        # Otherwise, the grid would be upside down.
+        invert_row = Notation.length_longest_column(notation)
 
-        """ put as many buttons in the picross board as there are rows * columns """
+        # column data from notation [[1,1], [1,1]...]
+        column_data = Notation.all_columns(notation)
 
-        for row in range(0, len(Notation.all_rows(notation))):
-            for col in range(0, len(Notation.all_columns(notation))):
+        # reverse each column because grid is putting them in upside down
+        for col in column_data:
+            col.reverse()
 
-                new_button = ButtonTile(self.picross_frame)
-                new_button.button.grid(row=row, column=col)
+        for this_column in range(0, len(column_data)):
+            for clue in range(0, len(column_data[this_column])):
+                # make a button for this clue and put it in a column
+                new_button = ClueTile(column_clues)
+                new_button.button.config(text=column_data[this_column][clue])
+                new_button.button.grid(row=invert_row - clue, column=this_column)

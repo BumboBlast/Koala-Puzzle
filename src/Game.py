@@ -1,6 +1,6 @@
 from tkinter import *
 from Layout import *
-
+from PicrossBoard import *
 
 class Game:
 
@@ -8,5 +8,6 @@ class Game:
         """ Makes a new game (picross) with rows/columns as param. Eventually take in a picross-FEN """
 
         layout = Layout(root, notation)
+        picross = PicrossBoard(notation, layout.picross_frame)
 
 
