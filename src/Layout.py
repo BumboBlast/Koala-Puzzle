@@ -75,7 +75,7 @@ class Layout:
                 new_button.button.grid(row=invert_row - clue, column=this_column)
 
         """ Tile the row frame!"""
-        
+
         # (this value - index of current clue) to put the grid's cell relative to the bottom.
         # Otherwise, the grid would be upside down.
         invert_col = Notation.length_longest_row(notation)
@@ -94,8 +94,16 @@ class Layout:
                 new_button.button.config(text=row_data[this_row][clue])
                 new_button.button.grid(row=this_row, column=invert_col - clue)
 
-        # re-evaluate the picross frame dimensions.
+        # re-evaluate the frame dimensions.
         self.column_clues.update_idletasks()
         self.row_clues.update_idletasks()
         self.picross_frame.config(width=self.column_clues.winfo_width(), height=self.row_clues.winfo_height())
         self.corner_frame.config(width=self.row_clues.winfo_width(), height=self.column_clues.winfo_height())
+
+        """ put as many buttons in the picross board as there are rows * columns """
+
+        for row in range(0, len(Notation.all_rows(notation))):
+            for col in range(0, len(Notation.all_columns(notation))):
+
+                new_button = Tile(self.picross_frame)
+                new_button.button.grid(row=row, column=col)
