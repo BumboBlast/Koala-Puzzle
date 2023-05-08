@@ -30,19 +30,6 @@ class Layout:
         self.game_frame.grid_columnconfigure(1, weight=1)
 
         """ At the moment, the sizes are relative to the clue_frames, so i can input a variable number of clues. """
-
-        # how many columns there are
-        column_clues_width = Notation.how_many_columns(notation) * 50
-
-        # how long is the largest column (number of clues per column)
-        column_clues_height = Notation.length_longest_column(notation) * 50
-
-        # how long is the largest row (number of clues per row)
-        row_clues_width = Notation.length_longest_row(notation) * 50
-
-        # how many rows there are
-        row_clues_height = Notation.how_many_columns(notation) * 50
-
         # # vertical clues frame. Container holds the vertical clues. Rectangle above the nonogram.
         self.column_clues = Frame(self.game_frame, bg='yellow',
                                   highlightbackground='black', highlightthickness='2')
@@ -50,28 +37,28 @@ class Layout:
         self.column_clues.grid_propagate()
 
         # horizontal clues frame. Container holds the horizontal clues. Rectangle to the left of the nonogram.
-        self.row_clues = Frame(self.game_frame, bg='light green', width=row_clues_width, height=row_clues_height,
+        self.row_clues = Frame(self.game_frame, bg='light green',
                                highlightbackground='black', highlightthickness='2')
         self.row_clues.grid(row=1, column=0, sticky='NE')
-        self.row_clues.grid_propagate(False)
+        self.row_clues.grid_propagate()
 
         # corner frame. Represents the empty space between the clues, complement of the picross board.
-        self.corner_frame = Frame(self.game_frame, bg='cyan', width=row_clues_width, height=column_clues_height,
+        self.corner_frame = Frame(self.game_frame, bg='cyan',
                                   highlightbackground='black', highlightthickness='2')
         self.corner_frame.grid(row=0, column=0, sticky='SE')
-        self.corner_frame.grid_propagate(False)
+        self.corner_frame.grid_propagate()
 
         # picross frame. Container holds the nonogram board.
-        self.picross_frame = Frame(self.game_frame, bg='lavender', width=column_clues_width, height=row_clues_height,
+        self.picross_frame = Frame(self.game_frame, bg='lavender',
                                    highlightbackground='black', highlightthickness='2')
         self.picross_frame.grid(row=1, column=1, sticky='NW')
-        self.picross_frame.grid_propagate(False)
+        self.picross_frame.grid_propagate()
 
-        """ Tile the clue frames."""
+        """ Tile the row clue frame."""
 
-        # (these values - index of current clue) to put the grid's cell relative to the bottom.
+        # (this value - index of current clue) to put the grid's cell relative to the bottom.
         # Otherwise, the grid would be upside down.
-        invert_col = Notation.length_longest_column(notation)
+        invert_row = Notation.length_longest_column(notation)
 
         # column data from notation [[1,1], [1,1]...]
         column_data = Notation.all_columns(notation)
@@ -85,9 +72,26 @@ class Layout:
                 # make a button for this clue and put it in a column
                 new_button = Tile(self.column_clues)
                 new_button.button.config(text=column_data[this_column][clue])
-                new_button.button.grid(row=invert_col - clue, column=this_column)
+                new_button.button.grid(row=invert_row - clue, column=this_column)
+
+        """ Tile the row frame!"""
+
+        # (this value - index of current clue) to put the grid's cell relative to the bottom.
+        # Otherwise, the grid would be upside down.
+        invert_col = Notation.length_longest_row(notation)
+
+        # row data from notation [[1,1], [1,1]...]
+        row_data = Notation.all_rows(notation)
+
+        for this_row in range(0, len(row_data)):
+            for clue in range(0, len(row_data[this_row])):
+                # make a button for this clue and put it in a column
+                new_button = Tile(self.row_clues)
+                new_button.button.config(text=row_data[this_row][clue])
+                new_button.button.grid(row=this_row, column=invert_col - clue)
 
         # re-evaluate the picross frame dimensions.
         self.column_clues.update_idletasks()
         self.row_clues.update_idletasks()
         self.picross_frame.config(width=self.column_clues.winfo_width(), height=self.row_clues.winfo_height())
+        self.corner_frame.config(width=self.row_clues.winfo_width(), height=self.column_clues.winfo_height())
