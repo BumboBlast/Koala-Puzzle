@@ -70,7 +70,7 @@ class Layout:
         for this_column in range(0, len(column_data)):
             for clue in range(0, len(column_data[this_column])):
                 # make a button for this clue and put it in a column
-                new_button = Tile(self.column_clues)
+                new_button = ClueTile(self.column_clues)
                 new_button.button.config(text=column_data[this_column][clue])
                 new_button.button.grid(row=invert_row - clue, column=this_column)
 
@@ -90,7 +90,7 @@ class Layout:
         for this_row in range(0, len(row_data)):
             for clue in range(0, len(row_data[this_row])):
                 # make a button for this clue and put it in a column
-                new_button = Tile(self.row_clues)
+                new_button = ClueTile(self.row_clues)
                 new_button.button.config(text=row_data[this_row][clue])
                 new_button.button.grid(row=this_row, column=invert_col - clue)
 
@@ -105,5 +105,5 @@ class Layout:
         for row in range(0, len(Notation.all_rows(notation))):
             for col in range(0, len(Notation.all_columns(notation))):
 
-                new_button = Tile(self.picross_frame)
+                new_button = ButtonTile(self.picross_frame)
                 new_button.button.grid(row=row, column=col)
