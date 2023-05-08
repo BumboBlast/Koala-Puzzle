@@ -1,5 +1,6 @@
 from tkinter import *
 from Notation import *
+from Tile import *
 
 """This is a list of functions that configure the layout of the screen. Provides no functionality."""
 
@@ -43,10 +44,10 @@ class Layout:
         row_clues_height = Notation.how_many_columns(notation) * 50
 
         # # vertical clues frame. Container holds the vertical clues. Rectangle above the nonogram.
-        self.column_clues = Frame(self.game_frame, bg='yellow', width=column_clues_width, height=column_clues_height,
+        self.column_clues = Frame(self.game_frame, bg='yellow',
                                   highlightbackground='black', highlightthickness='2')
         self.column_clues.grid(row=0, column=1, sticky='SW')
-        self.column_clues.grid_propagate(False)
+        self.column_clues.grid_propagate()
 
         # horizontal clues frame. Container holds the horizontal clues. Rectangle to the left of the nonogram.
         self.row_clues = Frame(self.game_frame, bg='light green', width=row_clues_width, height=row_clues_height,
@@ -71,15 +72,22 @@ class Layout:
         # (these values - index of current clue) to put the grid's cell relative to the bottom.
         # Otherwise, the grid would be upside down.
         invert_col = Notation.length_longest_column(notation)
-        invert_clue = Notation.how_many_columns(notation)
 
-        # button dimensions
-        button_height = 1
-        button_width = 2
+        # column data from notation [[1,1], [1,1]...]
+        column_data = Notation.all_columns(notation)
 
-        for this_column in range(0, len(Notation.all_columns(notation))):
-            for clue in range(0, len(Notation.all_columns(notation)[this_column])):
+        # reverse each column because grid is putting them in upside down
+        for col in column_data:
+            col.reverse()
 
+        for this_column in range(0, len(column_data)):
+            for clue in range(0, len(column_data[this_column])):
                 # make a button for this clue and put it in a column
-                new_button = Button(self.column_clues, text=Notation.all_columns(notation)[this_column][clue], height=button_height, width=button_width)
-                new_button.grid(row=invert_col - clue, column=invert_clue - this_column)
+                new_button = Tile(self.column_clues)
+                new_button.button.config(text=column_data[this_column][clue])
+                new_button.button.grid(row=invert_col - clue, column=this_column)
+
+        # re-evaluate the picross frame dimensions.
+        self.column_clues.update_idletasks()
+        self.row_clues.update_idletasks()
+        self.picross_frame.config(width=self.column_clues.winfo_width(), height=self.row_clues.winfo_height())
